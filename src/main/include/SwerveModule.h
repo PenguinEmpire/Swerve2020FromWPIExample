@@ -16,16 +16,19 @@
 
 #include "rev/CANSparkMax.h"
 #include "rev/CANPIDController.h"
+#include "rev/CANEncoder.h"
 #include "rev/SparkMax.h"
+#include "frc/AnalogEncoder.h"
+#include "frc/AnalogInput.h"
 
 class SwerveModule {
  public:
-  SwerveModule(int driveMotorChannel, int turningMotorChannel);
+  SwerveModule(int driveMotorChannel, int turningMotorChannel, const int analogEncoderChannel);
   frc::SwerveModuleState GetState() const;
   void SetDesiredState(const frc::SwerveModuleState& state);
 
  private:
-  static constexpr double kWheelRadius = 0.0508; // constant_todo
+  static constexpr double kWheelRadius = 0.1016; // 4in in meters. used to be 0508.
   static constexpr int kEncoderResolution = 4096; //constant_todo
 
   static constexpr auto kModuleMaxAngularVelocity =
@@ -34,24 +37,31 @@ class SwerveModule {
       wpi::math::pi * 2_rad_per_s / 1_s;  // radians per second^2 // constant_todo
 
   static constexpr units::revolutions_per_minute_t maxAngVel{kModuleMaxAngularVelocity};
-  static constexpr units::revolutions_per_minute_per_second_t maxAngAccel kModuleMaxAngularAcceleration};
 
-//   frc::PWMVictorSPX m_driveMotor;
-//   frc::PWMVictorSPX m_turningMotor;
-  rev::SparkMax m_driveMotor;
-  rev::CANSparkMax m_turningMotor;
+  static constexpr double radPerSecToRevPerMinRatio = 9.5492965; // ration to convert from rad/sec to rev/min; eq to 30/pi
 
-  frc::Encoder m_driveEncoder{0, 1};
-  frc::Encoder m_turningEncoder{2, 3};
+  static constexpr double moduleMaxAngularAccelerationRevPerMinPerSec = kModuleMaxAngularAcceleration.to<double>() * radPerSecToRevPerMinRatio;
 
-  frc2::PIDController m_drivePIDController{1.0, 0, 0};
+  // frc::PWMVictorSPX m_driveMotor;
+  // frc::PWMVictorSPX m_turningMotor;
+  // frc::Encoder m_driveEncoder{0, 1};
+  // frc::Encoder m_turningEncoder{2, 3};
+  // frc2::PIDController m_drivePIDController{1.0, 0, 0};
+  // frc::ProfiledPIDController<units::radians> m_turningPIDController{
+  //     1.0,
+  //     0.0,
+  //     0.0,
+  //     {kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration}};
 
-  rev::CANPIDController m_revTurningController;
+
+  rev::CANSparkMax m_driveMotor;
+  rev::SparkMax m_turningMotor;
 
 
-  frc::ProfiledPIDController<units::radians> m_turningPIDController{
-      1.0,
-      0.0,
-      0.0,
-      {kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration}};
+  frc::AnalogEncoder analogTurningEncoder;
+  rev::CANEncoder revDriveEncoder;
+
+  rev::CANPIDController m_revTurningController{m_driveMotor};
+
+
 };

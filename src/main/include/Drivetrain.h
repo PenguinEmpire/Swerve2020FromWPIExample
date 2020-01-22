@@ -24,7 +24,7 @@
 class Drivetrain {
  public:
   Drivetrain() {
-    m_gyro.Reset();
+    m_gyro->Reset();
   }
 
   /**
@@ -32,12 +32,12 @@ class Drivetrain {
    */
   frc::Rotation2d GetAngle() const {
     // Negating the angle because WPILib Gyros are CW positive.
-    return frc::Rotation2d(units::degree_t(-m_gyro.GetAngle()));
+    return frc::Rotation2d(units::degree_t(-m_gyro->GetAngle()));
   }
 
   void Drive(units::meters_per_second_t xSpeed,
              units::meters_per_second_t ySpeed, units::radians_per_second_t rot,
-             bool fieldRelative);
+             bool fieldRelative); 
   void UpdateOdometry();
 
   static constexpr units::meters_per_second_t kMaxSpeed =
@@ -51,14 +51,14 @@ class Drivetrain {
   frc::Translation2d m_backLeftLocation{-0.381_m, +0.381_m};
   frc::Translation2d m_backRightLocation{-0.381_m, -0.381_m};
 
-  SwerveModule m_frontLeft{1, 2};
-  SwerveModule m_frontRight{2, 3};
-  SwerveModule m_backLeft{5, 6};
-  SwerveModule m_backRight{7, 8};
+  SwerveModule m_frontLeft{7, 8, 3};
+  SwerveModule m_frontRight{5, 6, 2};
+  SwerveModule m_backLeft{3, 4, 1};
+  SwerveModule m_backRight{1, 2, 0};
 
   // frc::AnalogGyro m_gyro{0};
 
-  AHRS* m_gyro = new AHRS(frc::SPI:Port:kMXP);
+  AHRS* m_gyro = new AHRS(frc::SPI::Port::kMXP);
 
   frc::SwerveDriveKinematics<4> m_kinematics{
       m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation,

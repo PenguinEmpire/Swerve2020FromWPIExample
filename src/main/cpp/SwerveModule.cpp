@@ -10,17 +10,16 @@
 #include <frc/geometry/Rotation2d.h>
 #include <wpi/math>
 
+#include "frc/AnalogInput.h"
+
 SwerveModule::SwerveModule(const int driveMotorChannel,
-                           const int turningMotorChannel)
-    : m_driveMotor(driveMotorChannel), m_turningMotor(turningMotorChannel, rev::CANSparkMax::MotorType::kBrushless) {
-
-
-      m_revTurningController = m_turningMotor.GetPIDController();
+                           const int turningMotorChannel, const int analogEncoderChannel)
+    : m_driveMotor(driveMotorChannel, rev::CANSparkMax::MotorType::kBrushless), m_turningMotor(turningMotorChannel), analogTurningEncoder{new frc::AnalogInput(analogEncoderChannel)}, revDriveEncoder{m_driveMotor} {
       m_revTurningController.SetP(1.0);
       m_revTurningController.SetI(0.);
       m_revTurningController.SetD(0.);
-      m_revTurningController.SetSmartMotionMaxVelocity((double)kModuleMaxAngularVelocity);
-      m_revTurningController.SetSmartMotionMaxAccel((double)kModuleMaxAngularAcceleration);
+      m_revTurningController.SetSmartMotionMaxVelocity(maxAngVel.to<double>());
+      m_revTurningController.SetSmartMotionMaxAccel(moduleMaxAngularAccelerationRevPerMinPerSec);
 
 
   // Set the distance per pulse for the drive encoder. We can simply use the
