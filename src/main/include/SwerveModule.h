@@ -42,26 +42,30 @@ class SwerveModule {
 
   static constexpr double moduleMaxAngularAccelerationRevPerMinPerSec = kModuleMaxAngularAcceleration.to<double>() * radPerSecToRevPerMinRatio;
 
+
+
   // frc::PWMVictorSPX m_driveMotor;
   // frc::PWMVictorSPX m_turningMotor;
   // frc::Encoder m_driveEncoder{0, 1};
   // frc::Encoder m_turningEncoder{2, 3};
   // frc2::PIDController m_drivePIDController{1.0, 0, 0};
-  // frc::ProfiledPIDController<units::radians> m_turningPIDController{
-  //     1.0,
-  //     0.0,
-  //     0.0,
-  //     {kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration}};
+//   frc::ProfiledPIDController<units::radians> m_turningPIDController{
+//       1.0,
+//       0.0,
+//       0.0,
+//       {kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration}};
 
 
   rev::CANSparkMax m_driveMotor;
-  rev::SparkMax m_turningMotor;
+  rev::CANSparkMax m_turningMotor;
+
+  frc2::PIDController m_turnPIDController{1.5, 0, 0.5}; 
 
 
   frc::AnalogEncoder analogTurningEncoder;
   rev::CANEncoder revDriveEncoder;
 
-  rev::CANPIDController m_revTurningController{m_driveMotor};
+//  rev::CANPIDController m_revTurningController{m_driveMotor};
 
 
 };
