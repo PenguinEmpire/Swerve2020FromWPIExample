@@ -46,10 +46,10 @@ class Drivetrain {
       wpi::math::pi};  // 1/2 rotation per second
 
  private:
-  frc::Translation2d m_frontLeftLocation{+0.381_m, +0.381_m};
-  frc::Translation2d m_frontRightLocation{+0.381_m, -0.381_m};
-  frc::Translation2d m_backLeftLocation{-0.381_m, +0.381_m};
-  frc::Translation2d m_backRightLocation{-0.381_m, -0.381_m};
+  frc::Translation2d m_frontLeftLocation{+0.2698_m, +0.3048_m};  // may reorient sidedness TODO
+  frc::Translation2d m_frontRightLocation{+0.2698, -0.3048_m}; 
+  frc::Translation2d m_backLeftLocation{-0.2698_m, +0.3048_m}; 
+  frc::Translation2d m_backRightLocation{-0.2698_m, -0.3048_m};
 
   SwerveModule m_frontLeft{7, 8, 3};
   SwerveModule m_frontRight{5, 6, 2};
