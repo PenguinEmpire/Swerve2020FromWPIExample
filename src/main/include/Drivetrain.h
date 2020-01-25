@@ -47,7 +47,7 @@ class Drivetrain {
 
  private:
   frc::Translation2d m_frontLeftLocation{+0.2698_m, +0.3048_m};  // may reorient sidedness TODO
-  frc::Translation2d m_frontRightLocation{+0.2698, -0.3048_m}; 
+  frc::Translation2d m_frontRightLocation{+0.2698_m, -0.3048_m}; 
   frc::Translation2d m_backLeftLocation{-0.2698_m, +0.3048_m}; 
   frc::Translation2d m_backRightLocation{-0.2698_m, -0.3048_m};
 

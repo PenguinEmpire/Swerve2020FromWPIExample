@@ -20,7 +20,7 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override { DriveWithJoystick(true); }
 
  private:
-  frc::XboxController m_controller{0};
+  frc::XboxController m_controller{2};
   Drivetrain m_swerve;
 
   void DriveWithJoystick(bool fieldRelative) {
