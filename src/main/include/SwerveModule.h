@@ -62,7 +62,8 @@ class SwerveModule {
   frc2::PIDController m_turnPIDController{1.5, 0, 0.5}; 
 
 
-  frc::AnalogEncoder analogTurningEncoder;
+  frc::AnalogEncoder m_turningEncoder;
+
   rev::CANEncoder revDriveEncoder;
 
 //  rev::CANPIDController m_revTurningController{m_driveMotor};
