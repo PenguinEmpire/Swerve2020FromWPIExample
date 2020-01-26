@@ -7,6 +7,7 @@
 
 #include <frc/TimedRobot.h>
 #include <frc/XboxController.h>
+#include "frc/Joystick.h"
 
 #include "Drivetrain.h"
 
@@ -17,9 +18,13 @@ class Robot : public frc::TimedRobot {
     m_swerve.UpdateOdometry();
   }
 
-  void TeleopPeriodic() override { DriveWithJoystick(true); }
+  void TeleopPeriodic() override {
+    bool fieldRelative = !joy0.GetRawButton(4);
+    DriveWithJoystick(fieldRelative);
+  }
 
  private:
+  frc::Joystick joy0{0};
   frc::XboxController m_controller{2};
   Drivetrain m_swerve;
 
