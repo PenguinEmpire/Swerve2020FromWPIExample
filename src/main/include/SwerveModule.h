@@ -37,9 +37,10 @@ class SwerveModule {
     return units::radian_t(SwerveModule::m_turningEncoder.Get()).to<double>();
 
   }
-
+ 
 
  private:
+ int m_id;
   static constexpr double kWheelRadius = 0.1016; // 4in in meters. used to be 0508.
   static constexpr int kEncoderResolution = 4096; //constant_todo
 

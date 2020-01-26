@@ -12,11 +12,15 @@
 
 #include "frc/AnalogInput.h"
 
+#include <cmath>
+
 SwerveModule::SwerveModule(int driveMotorChannel,
                            int turningMotorChannel, int analogEncoderChannel)
   : m_driveMotor(driveMotorChannel, rev::CANSparkMax::MotorType::kBrushless),
     m_turningMotor(turningMotorChannel, rev::CANSparkMax::MotorType::kBrushless),
-    m_turningEncoder{new frc::AnalogInput(analogEncoderChannel)}
+    m_turningEncoder{new frc::AnalogInput(analogEncoderChannel)},
+    m_id{analogEncoderChannel}
+
     {   
   // Set the distance per pulse for the drive encoder. We can simply use the
   // distance traveled for one rotation of the wheel divided by the encoder
@@ -36,23 +40,37 @@ SwerveModule::SwerveModule(int driveMotorChannel,
 
 frc::SwerveModuleState SwerveModule::GetState() {//const {
   return {units::meters_per_second_t{m_driveEncoder.GetVelocity()},
-          frc::Rotation2d(units::radian_t(m_turningEncoder.Get() ))};
+          frc::Rotation2d(units::radian_t(m_turningEncoder.Get()))};
 }
 
 void SwerveModule::SetDesiredState(const frc::SwerveModuleState& state) {
   // Calculate the drive output from the drive PID controller.
   const auto driveOutput = state.speed.to<double>();
   if (fabs(driveOutput) > 1) {
-    printf("driveOutput: %f", driveOutput);
+    // printf("driveOutput: %f\n", driveOutput);
   }
 
   // Calculate the turning motor output from the turning PID controller.
-  const auto turnOutput = m_turningPIDController.Calculate(
+
+  printf("ID %i turn measurement: %f\n", m_id, units::radian_t(m_turningEncoder.Get()).to<double>());
+  printf("ID %i turn measurement mod-ed: %f\n", m_id, fmod(
       units::radian_t(m_turningEncoder.Get()).to<double>(),
+      (2 * wpi::math::pi)
+      ));
+
+  printf("ID %i turn set point: %f\n", m_id, state.angle.Radians().to<double>());
+
+  const auto turnOutput = m_turningPIDController.Calculate(
+      fmod(
+      units::radian_t(m_turningEncoder.Get()).to<double>(),
+      (2 * wpi::math::pi)
+      ),
       state.angle.Radians().to<double>()
   );
-
+ 
   // Set the motor outputs.
-  m_driveMotor.Set(driveOutput);
+  //m_driveMotor.Set(driveOutput);
   m_turningMotor.Set(turnOutput);
+  printf("ID %i turn output: %f \n", m_id, turnOutput);
+  printf(" ID %i drive output %f \n", m_id,  driveOutput);
 }
