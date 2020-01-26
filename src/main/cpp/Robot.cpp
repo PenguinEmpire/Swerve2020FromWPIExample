@@ -24,20 +24,17 @@ class Robot : public frc::TimedRobot {
     DriveWithJoystick(fieldRelative);
   
 
-   frc::SmartDashboard::PutNumber("FL Drive Encoder Velocity", m_swerve.m_frontLeft.getDriveEncoderVelocity() );
-   frc::SmartDashboard::PutNumber("FL Encoder Angle", m_swerve.m_frontLeft.getTurnEncoderAngle());
+    frc::SmartDashboard::PutNumber("FL Drive Encoder Velocity", m_swerve.m_frontLeft.getDriveEncoderVelocity());
+    frc::SmartDashboard::PutNumber("FL Encoder Angle", m_swerve.m_frontLeft.getTurnEncoderAngle());
 
-   frc::SmartDashboard::PutNumber("FR Drive Encoder Velocity", m_swerve.m_frontRight.getDriveEncoderVelocity() );
-   frc::SmartDashboard::PutNumber("FR Encoder Angle", m_swerve.m_frontRight.getTurnEncoderAngle());
+    frc::SmartDashboard::PutNumber("FR Drive Encoder Velocity", m_swerve.m_frontRight.getDriveEncoderVelocity());
+    frc::SmartDashboard::PutNumber("FR Encoder Angle", m_swerve.m_frontRight.getTurnEncoderAngle());
 
-   frc::SmartDashboard::PutNumber("BL Drive Encoder Velocity", m_swerve.m_backLeft.getDriveEncoderVelocity());
-   frc::SmartDashboard::PutNumber("BL Encoder Angle", m_swerve.m_backLeft.getTurnEncoderAngle());
+    frc::SmartDashboard::PutNumber("BL Drive Encoder Velocity", m_swerve.m_backLeft.getDriveEncoderVelocity());
+    frc::SmartDashboard::PutNumber("BL Encoder Angle", m_swerve.m_backLeft.getTurnEncoderAngle());
 
-    frc::SmartDashboard::PutNumber(" BR Drive Encoder Velocity", m_swerve.m_backRight.getDriveEncoderVelocity());
-   frc::SmartDashboard::PutNumber(" BR Encoder Angle", m_swerve.m_backRight.getTurnEncoderAngle());
-   
-   frc::SmartDashboard::PutNumber("turn Joystick values", joy0.GetRawAxis(0));
-   
+    frc::SmartDashboard::PutNumber("BR Encoder Angle", m_swerve.m_backRight.getTurnEncoderAngle());   
+    frc::SmartDashboard::PutNumber("BR Drive Encoder Velocity", m_swerve.m_backRight.getDriveEncoderVelocity());
   }
 
  private:

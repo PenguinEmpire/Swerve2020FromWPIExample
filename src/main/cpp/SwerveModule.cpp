@@ -52,25 +52,25 @@ void SwerveModule::SetDesiredState(const frc::SwerveModuleState& state) {
 
   // Calculate the turning motor output from the turning PID controller.
 
-  printf("ID %i turn measurement: %f\n", m_id, units::radian_t(m_turningEncoder.Get()).to<double>());
-  printf("ID %i turn measurement mod-ed: %f\n", m_id, fmod(
-      units::radian_t(m_turningEncoder.Get()).to<double>(),
-      (2 * wpi::math::pi)
-      ));
+  // printf("ID %i turn measurement: %f\n", m_id, units::radian_t(m_turningEncoder.Get()).to<double>());
+  // printf("ID %i turn measurement mod-ed: %f\n", m_id, fmod(
+  //     units::radian_t(m_turningEncoder.Get()).to<double>(),
+  //     (2 * wpi::math::pi)
+  //     ));
 
-  printf("ID %i turn set point: %f\n", m_id, state.angle.Radians().to<double>());
+  // printf("ID %i turn set point: %f\n", m_id, state.angle.Radians().to<double>());
 
   const auto turnOutput = m_turningPIDController.Calculate(
       fmod(
-      units::radian_t(m_turningEncoder.Get()).to<double>(),
-      (2 * wpi::math::pi)
+        units::radian_t(m_turningEncoder.Get()).to<double>(),
+        (2 * wpi::math::pi)
       ),
       state.angle.Radians().to<double>()
   );
  
   // Set the motor outputs.
-  //m_driveMotor.Set(driveOutput);
-  m_turningMotor.Set(turnOutput);
-  printf("ID %i turn output: %f \n", m_id, turnOutput);
+  m_driveMotor.Set(driveOutput);
+  // m_turningMotor.Set(turnOutput);
+  // printf("ID %i turn output: %f \n", m_id, turnOutput);
   printf(" ID %i drive output %f \n", m_id,  driveOutput);
 }

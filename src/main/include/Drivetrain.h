@@ -40,10 +40,10 @@ class Drivetrain {
              bool fieldRelative); 
   void UpdateOdometry();
 
-  static constexpr units::meters_per_second_t kMaxSpeed = 3.5_mps; //1; //     3.0_mps;  // 3 meters per second
+  static constexpr units::meters_per_second_t kMaxSpeed = 1_mps; // 3.5_mps; //1; //     3.0_mps;  // 3 meters per second
   static constexpr units::radians_per_second_t kMaxAngularSpeed{wpi::math::pi};  // 1/2 rotation per second
 
-  SwerveModule m_frontLeft{8,  7, 3};
+  SwerveModule m_frontLeft{8, 7, 3};
   SwerveModule m_frontRight{6, 5, 2};
   SwerveModule m_backLeft{4, 3, 1};
   SwerveModule m_backRight{2, 1, 0};
@@ -54,7 +54,6 @@ class Drivetrain {
   frc::Translation2d m_frontRightLocation{+0.2698_m, -0.3048_m}; 
   frc::Translation2d m_backLeftLocation{-0.2698_m, +0.3048_m}; 
   frc::Translation2d m_backRightLocation{-0.2698_m, -0.3048_m};
-
 
   AHRS* m_gyro = new AHRS(frc::SPI::Port::kMXP);
 
