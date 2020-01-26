@@ -27,6 +27,18 @@ class SwerveModule {
   frc::SwerveModuleState GetState();
   void SetDesiredState(const frc::SwerveModuleState& state);
 
+  double getDriveEncoderVelocity() {
+    return SwerveModule::m_driveEncoder.GetVelocity();
+
+
+  }
+  double getTurnEncoderAngle() {
+
+    return units::radian_t(SwerveModule::m_turningEncoder.Get()).to<double>();
+
+  }
+
+
  private:
   static constexpr double kWheelRadius = 0.1016; // 4in in meters. used to be 0508.
   static constexpr int kEncoderResolution = 4096; //constant_todo
@@ -63,6 +75,8 @@ class SwerveModule {
 
 
   frc::AnalogEncoder m_turningEncoder;
+
+
 
   rev::CANEncoder m_driveEncoder = m_driveMotor.GetEncoder();
 

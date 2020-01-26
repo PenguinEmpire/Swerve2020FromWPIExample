@@ -43,16 +43,18 @@ class Drivetrain {
   static constexpr units::meters_per_second_t kMaxSpeed = 3.5_mps; //1; //     3.0_mps;  // 3 meters per second
   static constexpr units::radians_per_second_t kMaxAngularSpeed{wpi::math::pi};  // 1/2 rotation per second
 
+  SwerveModule m_frontLeft{7, 8, 3};
+  SwerveModule m_frontRight{5, 6, 2};
+  SwerveModule m_backLeft{3, 4, 1};
+  SwerveModule m_backRight{1, 2, 0};
+
+
  private:
   frc::Translation2d m_frontLeftLocation{+0.2698_m, +0.3048_m};
   frc::Translation2d m_frontRightLocation{+0.2698_m, -0.3048_m}; 
   frc::Translation2d m_backLeftLocation{-0.2698_m, +0.3048_m}; 
   frc::Translation2d m_backRightLocation{-0.2698_m, -0.3048_m};
 
-  SwerveModule m_frontLeft{7, 8, 3};
-  SwerveModule m_frontRight{5, 6, 2};
-  SwerveModule m_backLeft{3, 4, 1};
-  SwerveModule m_backRight{1, 2, 0};
 
   AHRS* m_gyro = new AHRS(frc::SPI::Port::kMXP);
 

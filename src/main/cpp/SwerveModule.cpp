@@ -36,7 +36,7 @@ SwerveModule::SwerveModule(int driveMotorChannel,
 
 frc::SwerveModuleState SwerveModule::GetState() {//const {
   return {units::meters_per_second_t{m_driveEncoder.GetVelocity()},
-          frc::Rotation2d(units::radian_t(m_turningEncoder.Get() * 2 * wpi::math::pi))};
+          frc::Rotation2d(units::radian_t(m_turningEncoder.Get() ))};
 }
 
 void SwerveModule::SetDesiredState(const frc::SwerveModuleState& state) {

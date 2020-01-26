@@ -8,7 +8,8 @@
 #include <frc/TimedRobot.h>
 #include <frc/XboxController.h>
 #include "frc/Joystick.h"
-
+#include <frc/smartdashboard/SmartDashboard.h>
+#include "SwerveModule.h"
 #include "Drivetrain.h"
 
 class Robot : public frc::TimedRobot {
@@ -21,6 +22,11 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override {
     bool fieldRelative = !joy0.GetRawButton(4);
     DriveWithJoystick(fieldRelative);
+  
+
+   frc::SmartDashboard::PutNumber("Drive Encoder Velocity", m_swerve.m_frontLeft.getDriveEncoderVelocity() );
+   frc::SmartDashboard::PutNumber("Encoder Angle", m_swerve.m_frontLeft.getTurnEncoderAngle());
+   frc::SmartDashboard::PutNumber("turn Joystick values", joy0.GetRawAxis(0));
   }
 
  private:
