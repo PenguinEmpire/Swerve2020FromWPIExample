@@ -14,13 +14,11 @@
 
 #include <cmath>
 
-SwerveModule::SwerveModule(int driveMotorChannel,
-                           int turningMotorChannel, int analogEncoderChannel)
+SwerveModule::SwerveModule(int driveMotorChannel, int turningMotorChannel, int analogEncoderChannel, double turningEncoderOffset)
   : m_driveMotor(driveMotorChannel, rev::CANSparkMax::MotorType::kBrushless),
     m_turningMotor(turningMotorChannel, rev::CANSparkMax::MotorType::kBrushless),
-    m_turningEncoder{new frc::AnalogInput(analogEncoderChannel)},
-    m_id{analogEncoderChannel}
-
+    m_turningEncoder{analogEncoderChannel, turningEncoderOffset, false},
+    m_ID{analogEncoderChannel}
     {   
   // Set the distance per pulse for the drive encoder. We can simply use the
   // distance traveled for one rotation of the wheel divided by the encoder
@@ -44,22 +42,15 @@ frc::SwerveModuleState SwerveModule::GetState() {//const {
 }
 
 void SwerveModule::SetDesiredState(const frc::SwerveModuleState& state) {
-  // Calculate the drive output from the drive PID controller.
   const auto driveOutput = state.speed.to<double>();
-  if (fabs(driveOutput) > 1) {
-    // printf("driveOutput: %f\n", driveOutput);
-  }
 
   // Calculate the turning motor output from the turning PID controller.
-
-  // printf("ID %i turn measurement: %f\n", m_id, units::radian_t(m_turningEncoder.Get()).to<double>());
-  // printf("ID %i turn measurement mod-ed: %f\n", m_id, fmod(
-  //     units::radian_t(m_turningEncoder.Get()).to<double>(),
-  //     (2 * wpi::math::pi)
-  //     ));
-
-  // printf("ID %i turn set point: %f\n", m_id, state.angle.Radians().to<double>());
-
+  printf("ID %i turn measurement: %f\n", m_ID, units::radian_t(m_turningEncoder.Get()).to<double>());
+  printf("ID %i turn measurement mod-ed: %f\n", m_ID, fmod(
+      units::radian_t(m_turningEncoder.Get()).to<double>(),
+      (2 * wpi::math::pi)
+      ));
+  printf("ID %i turn set point: %f\n", m_ID, state.angle.Radians().to<double>());
   const auto turnOutput = m_turningPIDController.Calculate(
       fmod(
         units::radian_t(m_turningEncoder.Get()).to<double>(),
@@ -69,8 +60,8 @@ void SwerveModule::SetDesiredState(const frc::SwerveModuleState& state) {
   );
  
   // Set the motor outputs.
-  m_driveMotor.Set(driveOutput);
-  // m_turningMotor.Set(turnOutput);
-  // printf("ID %i turn output: %f \n", m_id, turnOutput);
-  printf(" ID %i drive output %f \n", m_id,  driveOutput);
+  // m_driveMotor.Set(driveOutput);
+  m_turningMotor.Set(turnOutput);
+  printf("ID %i turn output: %f \n", m_ID, turnOutput);
+  // printf(" ID %i drive output %f \n", m_id,  driveOutput);
 }

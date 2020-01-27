@@ -20,27 +20,53 @@
 #include "rev/SparkMax.h"
 #include "frc/AnalogEncoder.h"
 #include "frc/AnalogInput.h"
+#include "frc/RobotController.h"
 
 class SwerveModule {
  public:
-  SwerveModule(int driveMotorChannel, int turningMotorChannel, int analogEncoderChannel);
+  SwerveModule(int driveMotorChannel, int turningMotorChannel, int analogEncoderChannel, double turningEncoderOffset);
   frc::SwerveModuleState GetState();
   void SetDesiredState(const frc::SwerveModuleState& state);
 
   double getDriveEncoderVelocity() {
     return SwerveModule::m_driveEncoder.GetVelocity();
-
-
   }
-  double getTurnEncoderAngle() {
 
+  double getTurnEncoderAngle() {
     return units::radian_t(SwerveModule::m_turningEncoder.Get()).to<double>();
+  }
+
+  double getTurnEncoderAngle_SDSVersion() {
 
   }
  
 
  private:
- int m_id;
+
+  struct TurnEncoder {
+    int port;
+    double offset; // rad
+    frc::AnalogInput encoderAsAnalogInput;
+    frc::AnalogEncoder encoderAsAnalogEncoder;
+
+    TurnEncoder(int port, double offset, bool offset_in_rad = true) : 
+      port{port},
+      offset{offset_in_rad ? offset : offset * wpi::math::pi / 180},
+      encoderAsAnalogInput{port},
+      encoderAsAnalogEncoder{encoderAsAnalogInput} {}
+
+    double getAngle_SDS() const {
+      double angle = (1.0 - encoderAsAnalogInput.GetVoltage() / frc::RobotController::GetVoltage5V()) * 2. * wpi::math::pi;
+      angle += offset;
+      angle = fmod(angle, 2. * wpi::math::pi);
+      if (angle < 0.0) {
+        angle += 2. * wpi::math::pi;
+      }
+      return angle;
+    }
+  };
+
+  int m_ID;
   static constexpr double kWheelRadius = 0.1016; // 4in in meters. used to be 0508.
   static constexpr int kEncoderResolution = 4096; //constant_todo
 
@@ -55,33 +81,23 @@ class SwerveModule {
 
   static constexpr double moduleMaxAngularAccelerationRevPerMinPerSec = kModuleMaxAngularAcceleration.to<double>() * radPerSecToRevPerMinRatio;
 
+  rev::CANSparkMax m_driveMotor;
+  rev::CANSparkMax m_turningMotor;
 
+  TurnEncoder m_turningEncoder;
+  rev::CANEncoder m_driveEncoder = m_driveMotor.GetEncoder();
+
+  // rev::CANPIDController m_revTurningController{m_driveMotor};
+  frc2::PIDController m_turningPIDController{1.5, 0, 0.5}; 
 
   // frc::PWMVictorSPX m_driveMotor;
   // frc::PWMVictorSPX m_turningMotor;
   // frc::Encoder m_driveEncoder{0, 1};
   // frc::Encoder m_turningEncoder{2, 3};
   // frc2::PIDController m_drivePIDController{1.0, 0, 0};
-//   frc::ProfiledPIDController<units::radians> m_turningPIDController{
-//       1.0,
-//       0.0,
-//       0.0,
-//       {kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration}};
-
-
-  rev::CANSparkMax m_driveMotor;
-  rev::CANSparkMax m_turningMotor;
-
-  frc2::PIDController m_turningPIDController{1.5, 0, 0.5}; 
-
-
-  frc::AnalogEncoder m_turningEncoder;
-
-
-
-  rev::CANEncoder m_driveEncoder = m_driveMotor.GetEncoder();
-
-//  rev::CANPIDController m_revTurningController{m_driveMotor};
-
-
+  // frc::ProfiledPIDController<units::radians> m_turningPIDController{
+  //     1.0,
+  //     0.0,
+  //     0.0,
+  //     {kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration}};
 };

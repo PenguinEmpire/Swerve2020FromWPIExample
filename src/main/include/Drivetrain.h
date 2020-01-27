@@ -41,12 +41,12 @@ class Drivetrain {
   void UpdateOdometry();
 
   static constexpr units::meters_per_second_t kMaxSpeed = 1_mps; // 3.5_mps; //1; //     3.0_mps;  // 3 meters per second
-  static constexpr units::radians_per_second_t kMaxAngularSpeed{wpi::math::pi};  // 1/2 rotation per second
+  static constexpr units::radians_per_second_t kMaxAngularSpeed{1}; // wpi::math::pi};  // 1/2 rotation per second
 
-  SwerveModule m_frontLeft{8, 7, 3};
-  SwerveModule m_frontRight{6, 5, 2};
-  SwerveModule m_backLeft{4, 3, 1};
-  SwerveModule m_backRight{2, 1, 0};
+  SwerveModule m_frontLeft{8, 7, 3, 134.5};
+  SwerveModule m_frontRight{6, 5, 2, 122.4};
+  SwerveModule m_backLeft{4, 3, 1, 268.7};
+  SwerveModule m_backRight{2, 1, 0, 243.6};
 
 
  private:
