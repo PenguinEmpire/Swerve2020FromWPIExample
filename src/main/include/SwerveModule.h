@@ -33,7 +33,7 @@ class SwerveModule {
   }
 
   double getTurnEncoderAngle() {
-    return units::radian_t(SwerveModule::m_turningEncoder.Get()).to<double>();
+    return units::radian_t(SwerveModule::m_turningEncoder.getAngle_SDS()).to<double>();
   }
 
   double getTurnEncoderAngle_SDSVersion() {
